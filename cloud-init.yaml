@@ -1,0 +1,33 @@
+#cloud-config
+datasource:
+  Ec2:
+    strict_id: false
+ssh_pwauth: no
+# Update and upgrade packages
+package_update: true
+package_upgrade: true
+# Install necessary packages
+packages:
+  - openjdk-21-jdk-headless
+  - tmux
+  - htop
+  - wget
+# Create Minecraft server directory
+create_files:
+  - path: /opt/minecraft
+    permissions: '0755'
+write_files:
+  # Create eula.txt
+  - path: /opt/minecraft/eula.txt
+    content: |
+      eula=true
+    # Create startup script
+  - path: /opt/minecraft/start.sh
+    content: |
+      #!/bin/bash
+      tmux new-session -d -s minecraft 'java -Xmx1024M -Xms1024M -jar minecraft_server_1.21.4.jar nogui'
+runcmd:
+  # Make script executable
+  - chmod +x /opt/minecraft/start.sh
+  # Download Minecraft 1.21.4 server jar
+  - wget -O /opt/minecraft/minecraft_server_1.21.4.jar https://piston-data.mojang.com/v1/objects/4707d00eb834b446575d89a61a11b5d548d8c001/server.jar
