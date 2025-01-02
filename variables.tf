@@ -3,3 +3,9 @@ variable "zone" {
   type        = string
   default     = "ru-central1-b"
 }
+
+variable "server_port" {
+  description = "(Optional) - Minecraft server port."
+  type        = number
+  default     = 25565
+}

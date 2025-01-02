@@ -16,7 +16,7 @@ resource "yandex_vpc_security_group" "this" {
     description    = "minecraft server port"
     protocol       = "ANY"
     v4_cidr_blocks = ["0.0.0.0/0"]
-    port           = 25565
+    port           = var.server_port
   }
 
   ingress {
@@ -30,7 +30,7 @@ resource "yandex_vpc_security_group" "this" {
     description    = "minecraft server port"
     protocol       = "ANY"
     v4_cidr_blocks = ["0.0.0.0/0"]
-    port           = 25565
+    port           = var.server_port
   }
 }
 
@@ -70,13 +70,15 @@ resource "yandex_compute_instance" "this" {
   zone        = var.zone
   platform_id = "standard-v3"
 
+  allow_stopping_for_update = true
+
   boot_disk {
     disk_id = yandex_compute_disk.boot_disk.id
   }
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 4
     core_fraction = 100
   }
 

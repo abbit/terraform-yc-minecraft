@@ -15,7 +15,7 @@ packages:
 # Create Minecraft server directory
 create_files:
   - path: /opt/minecraft
-    permissions: '0755'
+    permissions: '0777'
 write_files:
   # Create eula.txt
   - path: /opt/minecraft/eula.txt
@@ -25,7 +25,7 @@ write_files:
   - path: /opt/minecraft/start.sh
     content: |
       #!/bin/bash
-      tmux new-session -d -s minecraft 'java -Xmx1024M -Xms1024M -jar minecraft_server_1.21.4.jar nogui'
+      tmux new-session -d -s minecraft 'java -Xmx2048M -Xms2048M -jar minecraft_server_1.21.4.jar nogui'
 runcmd:
   # Make script executable
   - chmod +x /opt/minecraft/start.sh
