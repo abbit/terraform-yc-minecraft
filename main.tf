@@ -83,14 +83,15 @@ resource "yandex_compute_instance" "this" {
   }
 
   network_interface {
-    subnet_id      = yandex_vpc_subnet.this.id
-    nat            = true
-    nat_ip_address = yandex_vpc_address.public.external_ipv4_address[0].address
-
+    subnet_id          = yandex_vpc_subnet.this.id
+    security_group_ids = [yandex_vpc_security_group.this.id]
+    nat                = true
+    nat_ip_address     = yandex_vpc_address.public.external_ipv4_address[0].address
   }
 
   metadata = {
-    ssh-keys  = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
-    user-data = file("${path.module}/cloud-init.yaml")
+    enable-oslogin = true
+    ssh-keys       = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    user-data      = file("${path.module}/cloud-init.yaml")
   }
 }
