@@ -27,10 +27,9 @@ resource "yandex_vpc_security_group" "this" {
   }
 
   egress {
-    description    = "minecraft server port"
+    description    = "all"
     protocol       = "ANY"
     v4_cidr_blocks = ["0.0.0.0/0"]
-    port           = var.server_port
   }
 }
 
