@@ -48,6 +48,44 @@ resource "yandex_vpc_address" "public" {
   }
 }
 
+resource "yandex_dns_zone" "this" {
+  name   = "${local.name_prefix}-dns-zone"
+  zone   = var.dns_zone
+  public = true
+}
+
+resource "yandex_dns_recordset" "root" {
+  zone_id = yandex_dns_zone.this.id
+  name    = "@"
+  type    = "A"
+  ttl     = 600
+  data    = [yandex_vpc_address.public.external_ipv4_address[0].address]
+}
+
+resource "yandex_dns_recordset" "root-srv" {
+  zone_id = yandex_dns_zone.this.id
+  name    = "_minecraft._tcp.${var.dns_zone}"
+  type    = "SRV"
+  ttl     = 600
+  data    = ["10 0 ${var.server_port} ${var.dns_zone}"]
+}
+
+resource "yandex_dns_recordset" "wildcard" {
+  zone_id = yandex_dns_zone.this.id
+  name    = "*"
+  type    = "A"
+  ttl     = 600
+  data    = [yandex_vpc_address.public.external_ipv4_address[0].address]
+}
+
+resource "yandex_dns_recordset" "wildcard-srv" {
+  zone_id = yandex_dns_zone.this.id
+  name    = "*_minecraft._tcp.${var.dns_zone}"
+  type    = "SRV"
+  ttl     = 600
+  data    = ["10 0 ${var.server_port} ${var.dns_zone}"]
+}
+
 # instance
 
 data "yandex_compute_image" "ubuntu" {

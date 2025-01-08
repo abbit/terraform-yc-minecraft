@@ -9,3 +9,8 @@ variable "server_port" {
   type        = number
   default     = 25565
 }
+
+variable "dns_zone" {
+  type = string
+}
+
