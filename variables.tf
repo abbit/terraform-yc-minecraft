@@ -14,3 +14,8 @@ variable "dns_zone" {
   type = string
 }
 
+variable "image_id" {
+  description = "(Optional) - Image ID for instance boot disk. Defaults to latest Ubuntu 22.04 LTS"
+  type        = string
+  default     = null
+}

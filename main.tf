@@ -95,7 +95,7 @@ data "yandex_compute_image" "ubuntu" {
 
 resource "yandex_compute_disk" "boot_disk" {
   name     = "${local.name_prefix}-boot_disk"
-  image_id = data.yandex_compute_image.ubuntu.image_id
+  image_id = var.image_id != null ? var.image_id : data.yandex_compute_image.ubuntu.image_id
   zone     = var.zone
 
   type = "network-ssd"
